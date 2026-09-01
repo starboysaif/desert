@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { Oswald } from "next/font/google";
 import Logo from "@/components/Logo";
@@ -25,13 +25,7 @@ function TikTokIcon() {
 }
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000);
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -40,17 +34,7 @@ export default function Home() {
         console.log("Autoplay blocked:", err);
       });
     }
-  }, [loading]);
-
-  if (loading) {
-    return (
-      <main className="min-h-screen bg-black flex items-center justify-center">
-        <div className="loading-fade">
-          <Logo size={70} />
-        </div>
-      </main>
-    );
-  }
+  }, []);
 
   return (
     <main className="min-h-screen relative flex flex-col items-center justify-center gap-10 py-10 overflow-hidden">
