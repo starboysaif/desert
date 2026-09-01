@@ -14,7 +14,7 @@ function TikTokIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      fill="white"
+      fill="black"
       className="w-5 h-5"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -61,20 +61,20 @@ export default function Home() {
         />
         <Link
           href="/catalog"
-          className={`${oswald.className} italic text-white text-8xl md:text-[11rem] uppercase tracking-widest hover:opacity-70 transition`}
+          className={`${oswald.className} italic text-black text-8xl md:text-[11rem] uppercase tracking-widest hover:opacity-70 transition`}
         >
           Enter
         </Link>
         <div className="flex flex-col items-center gap-3 mt-24">
           <div className="flex gap-4">
-            <span className="border border-white w-10 h-10 flex items-center justify-center">
+            <span className="border border-black w-10 h-10 flex items-center justify-center">
               <InstagramIcon />
             </span>
-            <span className="border border-white w-10 h-10 flex items-center justify-center">
+            <span className="border border-black w-10 h-10 flex items-center justify-center">
               <TikTokIcon />
             </span>
           </div>
-          <span className="text-white text-xs uppercase tracking-widest">
+          <span className="text-black text-xs uppercase tracking-widest">
             Designed By Saif
           </span>
         </div>
