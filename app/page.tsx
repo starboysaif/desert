@@ -1,17 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import { InstagramIcon, TikTokIcon } from "@/components/Icons";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
+  const videoRef = useRef(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1000);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.play().catch((err) => {
+        console.log("Autoplay blocked:", err);
+      });
+    }
+  }, [loading]);
 
   if (loading) {
     return (
@@ -26,19 +36,19 @@ export default function Home() {
   return (
     <main className="min-h-screen relative flex flex-col items-center justify-center gap-10 py-10 overflow-hidden">
       <video
+        ref={videoRef}
         autoPlay
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover"
+        className="fixed inset-0 w-screen h-screen object-cover -z-10"
       >
         <source src="/desert.mp4" type="video/mp4" />
       </video>
-      <div className="absolute inset-0 bg-black/50" />
+      <div className="fixed inset-0 bg-black/50 -z-10" />
 
       <div className="relative z-10 flex flex-col items-center gap-10">
         <Logo size={70} />
-
         <nav className="flex flex-col items-center gap-5">
           <span className="w-48 text-center border border-white text-white px-6 py-3 uppercase tracking-widest text-sm cursor-default">
             Home
@@ -53,7 +63,6 @@ export default function Home() {
             Contact
           </span>
         </nav>
-
         <div className="flex gap-4 mt-4">
           <span className="border border-white w-10 h-10 flex items-center justify-center">
             <InstagramIcon />
