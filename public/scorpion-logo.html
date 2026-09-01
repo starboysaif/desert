@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3D Scorpion Logo</title>
+<style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: transparent;
+    overflow: hidden;
+  }
+  #canvas-wrap {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+  }
+  #canvas-wrap:active {
+    cursor: grabbing;
+  }
+</style>
+</head>
+<body>
+<div id="canvas-wrap"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// Vector outline of the scorpion silhouette, traced from the source PNG
+// (outer contour + small interior holes), in world units.
+const SHAPE_DATA = {"planeW":7.668,"planeH":6.2,"outer":[[3.699,2.875],[3.579,3.025],[3.444,3.1],[3.22,3.1],[3.1,3.04],[2.95,2.905],[2.89,2.666],[2.875,2.426],[2.786,2.321],[2.666,2.291],[2.786,2.291],[3.145,2.471],[3.355,2.636],[3.4,2.576],[3.4,1.812],[3.37,1.587],[3.295,1.483],[3.235,1.333],[3.22,1.048],[3.04,0.869],[2.98,0.704],[2.98,0.614],[2.666,0.434],[2.097,-0.135],[1.992,-0.21],[1.842,-0.255],[1.662,-0.359],[1.617,-0.359],[1.572,-0.329],[1.483,-0.12],[1.333,-0.06],[1.063,-0.075],[0.764,-0.195],[0.629,-0.3],[0.434,-0.509],[0.344,-0.539],[0.3,-0.509],[0.344,-0.105],[0.3,0.03],[0.18,0.06],[0.03,0.0],[-0.105,-0.12],[-0.255,-0.389],[-0.329,-0.599],[-0.389,-0.644],[-0.434,-0.599],[-0.389,0.0],[-0.434,0.075],[-0.494,0.09],[-0.584,0.03],[-0.659,-0.15],[-0.704,-0.419],[-0.704,-0.704],[-0.719,-0.764],[-0.764,-0.779],[-0.809,-0.659],[-0.884,-0.09],[-0.958,0.045],[-1.033,0.09],[-1.138,0.09],[-1.213,0.045],[-1.273,-0.06],[-1.333,-0.344],[-1.483,-0.434],[-1.632,-0.329],[-1.812,-0.285],[-2.097,-0.285],[-2.291,-0.329],[-2.441,-0.15],[-2.651,-0.06],[-3.04,-0.06],[-3.22,-0.12],[-3.325,-0.195],[-3.474,-0.374],[-3.564,-0.539],[-3.834,-0.869],[-3.834,-0.958],[-3.699,-0.929],[-3.4,-0.689],[-3.22,-0.599],[-3.115,-0.599],[-2.756,-0.689],[-2.336,-0.614],[-2.007,-0.689],[-1.737,-0.704],[-1.572,-0.764],[-1.168,-0.988],[-1.048,-1.108],[-1.018,-1.288],[-0.869,-1.213],[-0.824,-1.228],[-0.794,-1.273],[-0.809,-1.423],[-0.779,-1.438],[-0.629,-1.438],[-0.404,-1.393],[-0.344,-1.408],[-0.135,-1.677],[-0.15,-1.722],[-0.389,-1.722],[-0.943,-1.872],[-1.543,-1.977],[-1.752,-2.037],[-1.872,-2.097],[-1.947,-2.171],[-1.662,-2.171],[-1.003,-2.321],[-0.809,-2.381],[-0.419,-2.576],[-0.509,-2.651],[-0.824,-2.741],[-1.198,-2.741],[-1.752,-2.591],[-1.887,-2.576],[-1.677,-2.756],[-1.273,-2.935],[-0.988,-2.995],[-0.584,-2.995],[0.045,-2.875],[0.419,-2.771],[0.704,-2.561],[0.914,-2.471],[1.063,-2.306],[1.108,-2.097],[1.078,-1.947],[1.018,-1.857],[1.033,-1.812],[1.468,-1.707],[1.707,-1.692],[1.887,-1.782],[1.977,-1.782],[1.947,-1.872],[1.962,-2.067],[2.186,-2.681],[2.426,-2.98],[2.531,-3.04],[2.576,-3.04],[2.621,-3.085],[2.621,-3.01],[2.441,-2.83],[2.411,-2.771],[2.171,-1.872],[2.052,-1.602],[2.052,-1.528],[2.112,-1.513],[2.336,-1.557],[2.456,-1.632],[2.456,-1.812],[2.576,-2.157],[2.681,-2.351],[2.83,-2.501],[3.085,-2.561],[3.055,-2.516],[2.875,-2.426],[2.845,-2.381],[2.83,-2.186],[2.771,-1.932],[2.681,-1.662],[2.591,-1.468],[2.546,-1.423],[2.561,-1.348],[2.905,-1.393],[2.965,-1.483],[3.04,-1.797],[3.22,-2.112],[3.414,-2.276],[3.564,-2.291],[3.4,-2.142],[3.025,-1.213],[2.965,-1.138],[2.786,-1.048],[3.01,-1.003],[3.04,-1.033],[3.07,-1.183],[3.13,-1.258],[3.13,-1.333],[3.22,-1.528],[3.295,-1.602],[3.385,-1.647],[3.474,-1.632],[3.325,-1.423],[3.22,-1.018],[3.145,-0.839],[3.04,-0.749],[2.875,-0.734],[2.86,-0.674],[3.07,-0.539],[3.235,-0.3],[3.385,0.12],[3.385,0.314],[3.34,0.449],[3.414,0.494],[3.549,0.764],[3.564,0.839],[3.504,0.958],[3.624,1.033],[3.684,1.183],[3.714,1.513],[3.789,1.812],[3.819,1.842],[3.819,2.426],[3.789,2.456],[3.774,2.636]],"holes":[[[0.809,-0.419],[0.869,-0.344],[0.973,-0.27],[1.078,-0.27],[1.183,-0.3],[1.318,-0.285],[1.348,-0.314],[1.303,-0.374],[1.273,-0.374],[1.168,-0.434],[1.108,-0.434],[1.063,-0.404],[0.884,-0.404],[0.839,-0.434]],[[-1.183,-0.18],[-1.153,-0.18],[-1.123,-0.21],[-1.138,-0.404],[-1.078,-0.689],[-1.093,-0.764],[-1.123,-0.749],[-1.153,-0.674],[-1.303,-0.479],[-1.288,-0.359],[-1.228,-0.285],[-1.228,-0.24]],[[0.09,-0.165],[0.12,-0.3],[0.105,-0.509],[0.03,-0.554],[-0.135,-0.539],[-0.15,-0.509],[-0.03,-0.314],[0.015,-0.195],[0.045,-0.165]]]};
+
+const wrap = document.getElementById('canvas-wrap');
+const isSmall = Math.min(window.innerWidth, window.innerHeight) < 500;
+
+// ---------- Scene setup ----------
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(35, wrap.clientWidth / wrap.clientHeight, 0.1, 100);
+camera.position.set(0, 0, 11);
+camera.lookAt(0, 0, 0);
+
+const renderer = new THREE.WebGLRenderer({ antialias: !isSmall, alpha: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, isSmall ? 1.5 : 2));
+wrap.appendChild(renderer.domElement);
+
+function fitToWrap() {
+  const w = wrap.clientWidth || window.innerWidth;
+  const h = wrap.clientHeight || window.innerHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+}
+fitToWrap();
+window.addEventListener('load', fitToWrap);
+setTimeout(fitToWrap, 300);
+
+// ---------- Lighting ----------
+scene.add(new THREE.AmbientLight(0x666666, 0.8));
+
+const keyLight = new THREE.DirectionalLight(0xffffff, 0.9);
+keyLight.position.set(4, 5, 8);
+scene.add(keyLight);
+
+const rimLight = new THREE.DirectionalLight(0xffaa66, 0.4);
+rimLight.position.set(-5, -3, -4);
+scene.add(rimLight);
+
+// ---------- Build a single, genuinely solid extruded mesh ----------
+const group = new THREE.Group();
+scene.add(group);
+
+const shapePts = SHAPE_DATA.outer.map(p => new THREE.Vector2(p[0], p[1]));
+const shape = new THREE.Shape(shapePts);
+
+SHAPE_DATA.holes.forEach(holePts => {
+  const path = new THREE.Path(holePts.map(p => new THREE.Vector2(p[0], p[1])));
+  shape.holes.push(path);
+});
+
+const DEPTH = 1.6;
+const extrudeSettings = {
+  depth: DEPTH,
+  bevelEnabled: true,
+  bevelThickness: 0.07,
+  bevelSize: 0.06,
+  bevelSegments: 4,
+  curveSegments: 1,
+};
+
+const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+geometry.center();
+
+const capMaterial = new THREE.MeshPhongMaterial({
+  color: 0x161616,
+  specular: 0x554433,
+  shininess: 220,
+});
+const sideMaterial = new THREE.MeshPhongMaterial({
+  color: 0x161616,
+  specular: 0x554433,
+  shininess: 160,
+});
+
+const mesh = new THREE.Mesh(geometry, [capMaterial, sideMaterial]);
+group.add(mesh);
+
+// ---------- Interaction: drag to rotate, wheel to zoom ----------
+let isDragging = false;
+let prevX = 0, prevY = 0;
+let targetRotY = 0.5, targetRotX = -0.1;
+let currentRotY = targetRotY, currentRotX = targetRotX;
+let autoRotate = true;
+
+function startDrag(x, y) {
+  isDragging = true;
+  autoRotate = false;
+  prevX = x;
+  prevY = y;
+}
+function moveDrag(x, y) {
+  if (!isDragging) return;
+  const dx = x - prevX;
+  const dy = y - prevY;
+  prevX = x;
+  prevY = y;
+  targetRotY += dx * 0.008;
+  targetRotX += dy * 0.008;
+  targetRotX = Math.max(-0.6, Math.min(0.6, targetRotX));
+}
+function endDrag() {
+  isDragging = false;
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => { autoRotate = true; }, 2500);
+}
+
+wrap.addEventListener('pointerdown', (e) => startDrag(e.clientX, e.clientY));
+window.addEventListener('pointermove', (e) => moveDrag(e.clientX, e.clientY));
+window.addEventListener('pointerup', endDrag);
+
+wrap.addEventListener('touchstart', (e) => {
+  const t = e.touches[0];
+  startDrag(t.clientX, t.clientY);
+}, { passive: true });
+wrap.addEventListener('touchmove', (e) => {
+  const t = e.touches[0];
+  moveDrag(t.clientX, t.clientY);
+}, { passive: true });
+wrap.addEventListener('touchend', endDrag);
+
+wrap.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  camera.position.z = Math.max(5, Math.min(20, camera.position.z + e.deltaY * 0.01));
+}, { passive: false });
+
+let idleTimer = null;
+
+// ---------- Resize ----------
+window.addEventListener('resize', fitToWrap);
+
+// ---------- Animate ----------
+function animate() {
+  requestAnimationFrame(animate);
+
+  if (autoRotate) {
+    targetRotY += 0.006;
+  }
+  currentRotY += (targetRotY - currentRotY) * 0.08;
+  currentRotX += (targetRotX - currentRotX) * 0.08;
+
+  group.rotation.y = currentRotY;
+  group.rotation.x = currentRotX;
+
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>
