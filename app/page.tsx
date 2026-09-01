@@ -27,15 +27,15 @@ export default function Home() {
       <Logo size={70} />
 
       <nav className="flex flex-col items-center gap-5">
+        <span className="border border-white/40 text-white/40 px-10 py-3 uppercase tracking-widest text-sm cursor-default">
+          Home
+        </span>
         <Link
           href="/catalog"
           className="border border-white text-white px-10 py-3 uppercase tracking-widest text-sm hover:bg-white hover:text-black transition"
         >
-          Home
-        </Link>
-        <span className="border border-white/40 text-white/40 px-10 py-3 uppercase tracking-widest text-sm cursor-default">
           Catalog
-        </span>
+        </Link>
         <span className="border border-white/40 text-white/40 px-10 py-3 uppercase tracking-widest text-sm cursor-default">
           Contact
         </span>
