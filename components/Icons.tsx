@@ -34,9 +34,9 @@ export function CartIcon() {
 export function InstagramIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-      <rect x="2" y="2" width="20" height="20" rx="6" stroke="white" strokeWidth="1.8" />
-      <circle cx="12" cy="12" r="4.5" stroke="white" strokeWidth="1.8" />
-      <circle cx="17.5" cy="6.5" r="1.2" fill="white" />
+      <rect x="2" y="2" width="20" height="20" rx="6" stroke="black" strokeWidth="1.8" />
+      <circle cx="12" cy="12" r="4.5" stroke="black" strokeWidth="1.8" />
+      <circle cx="17.5" cy="6.5" r="1.2" fill="black" />
     </svg>
   );
 }
