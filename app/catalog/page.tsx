@@ -2,25 +2,29 @@
 
 import Link from "next/link";
 import Logo from "@/components/Logo";
+import { MenuIcon, SearchIcon, CartIcon } from "@/components/Icons";
 import { products } from "@/lib/products";
 
 export default function Catalog() {
   return (
     <main className="min-h-screen bg-black relative">
-      <header className="flex items-center justify-between px-10 py-6 relative z-10">
-        <div className="text-2xl tracking-widest">≡</div>
+      <header className="flex items-center justify-between px-14 py-14 relative z-10">
+        <div className="flex items-center gap-5">
+          <MenuIcon />
+          <SearchIcon />
+        </div>
         <Link href="/">
-          <Logo size={44} />
+          <Logo size={60} />
         </Link>
-        <div className="text-xl">🛒</div>
+        <CartIcon />
       </header>
 
-      <div className="grid grid-cols-3 gap-x-12 gap-y-20 px-20 mt-16 max-w-5xl mx-auto relative z-10">
+      <div className="grid grid-cols-3 gap-x-12 gap-y-20 px-20 mt-10 max-w-5xl mx-auto relative z-10">
         {products.map((product) => (
           <div key={product.id} className="flex flex-col items-center text-center">
             <img
               src={product.image}
-              alt={product.color}
+              alt={product.name}
               className="float-item w-full h-auto max-w-[220px]"
             />
             <p className="mt-4 text-sm tracking-wide">{product.color}</p>
