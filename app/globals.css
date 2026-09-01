@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #000000;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+@keyframes roll {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.tumbleweed-roll {
+  animation: roll 5s linear infinite;
+}
+
+@keyframes fade-in-out {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.loading-fade {
+  animation: fade-in-out 1s ease-in-out;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-14px); }
+}
+
+.float-item {
+  animation: float 4.5s ease-in-out infinite;
+}
