@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { Oswald } from "next/font/google";
-import Logo from "@/components/Logo";
 import { InstagramIcon } from "@/components/Icons";
 
 const oswald = Oswald({
@@ -50,7 +49,16 @@ export default function Home() {
       </video>
 
       <div className="relative z-10 flex flex-col items-center gap-16">
-        <Logo size={220} />
+        <iframe
+          src="/scorpion-logo.html"
+          style={{
+            width: 220,
+            height: 220,
+            border: "none",
+            background: "transparent",
+          }}
+          title="3D Scorpion Logo"
+        />
         <Link
           href="/catalog"
           className={`${oswald.className} italic text-white text-8xl md:text-[11rem] uppercase tracking-widest hover:opacity-70 transition`}
