@@ -7,7 +7,7 @@ import { InstagramIcon, TikTokIcon } from "@/components/Icons";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1000);
