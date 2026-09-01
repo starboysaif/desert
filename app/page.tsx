@@ -24,31 +24,44 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-black flex flex-col items-center justify-center gap-10 py-10">
-      <Logo size={70} />
+    <main className="min-h-screen relative flex flex-col items-center justify-center gap-10 py-10 overflow-hidden">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src="/desert.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-black/50" />
 
-      <nav className="flex flex-col items-center gap-5">
-        <span className="w-48 text-center border border-white text-white px-6 py-3 uppercase tracking-widest text-sm cursor-default">
-          Home
-        </span>
-        <Link
-          href="/catalog"
-          className="w-48 text-center border border-white text-white px-6 py-3 uppercase tracking-widest text-sm hover:bg-white hover:text-black transition"
-        >
-          Catalog
-        </Link>
-        <span className="w-48 text-center border border-white text-white px-6 py-3 uppercase tracking-widest text-sm cursor-default">
-          Contact
-        </span>
-      </nav>
+      <div className="relative z-10 flex flex-col items-center gap-10">
+        <Logo size={70} />
 
-      <div className="flex gap-4 mt-4">
-        <span className="border border-white w-10 h-10 flex items-center justify-center">
-          <InstagramIcon />
-        </span>
-        <span className="border border-white w-10 h-10 flex items-center justify-center">
-          <TikTokIcon />
-        </span>
+        <nav className="flex flex-col items-center gap-5">
+          <span className="w-48 text-center border border-white text-white px-6 py-3 uppercase tracking-widest text-sm cursor-default">
+            Home
+          </span>
+          <Link
+            href="/catalog"
+            className="w-48 text-center border border-white text-white px-6 py-3 uppercase tracking-widest text-sm hover:bg-white hover:text-black transition"
+          >
+            Catalog
+          </Link>
+          <span className="w-48 text-center border border-white text-white px-6 py-3 uppercase tracking-widest text-sm cursor-default">
+            Contact
+          </span>
+        </nav>
+
+        <div className="flex gap-4 mt-4">
+          <span className="border border-white w-10 h-10 flex items-center justify-center">
+            <InstagramIcon />
+          </span>
+          <span className="border border-white w-10 h-10 flex items-center justify-center">
+            <TikTokIcon />
+          </span>
+        </div>
       </div>
     </main>
   );
