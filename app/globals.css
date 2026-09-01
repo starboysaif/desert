@@ -41,4 +41,6 @@ body {
 }
 
 .float-item {
-  filter: drop-shadow(
+  filter: drop-shadow(0 10px 20px rgba(255,255,255,0.15)
+ );
+}
