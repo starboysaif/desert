@@ -36,14 +36,15 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen relative flex flex-col items-center justify-center gap-10 py-10 overflow-hidden">
+    <main className="min-h-screen relative flex flex-col items-center justify-center gap-10 py-10 overflow-hidden bg-[#e8c49a]">
       <video
         ref={videoRef}
         autoPlay
         loop
         muted
         playsInline
-        className="fixed inset-0 w-screen h-screen object-cover -z-10"
+        preload="auto"
+        className="fixed inset-0 w-full h-full object-cover -z-10"
       >
         <source src="/desert.mp4" type="video/mp4" />
       </video>
@@ -51,20 +52,21 @@ export default function Home() {
       <div className="relative z-10 flex flex-col items-center gap-16">
         <iframe
           src="/scorpion-logo.html"
-          style={{
-            width: 220,
-            height: 220,
-            border: "none",
-            background: "transparent",
-          }}
+          className="w-[180px] h-[180px] sm:w-[200px] sm:h-[200px] md:w-[220px] md:h-[220px]"
+          style={{ border: "none", background: "transparent" }}
           title="3D Scorpion Logo"
         />
+
         <Link
           href="/catalog"
-          className={`${oswald.className} italic text-black text-8xl md:text-[11rem] uppercase tracking-widest hover:opacity-70 transition`}
+          className={`${oswald.className} italic text-black text-8xl md:text-[11rem] uppercase tracking-widest 
+            transition-all duration-500 ease-out
+            hover:tracking-[0.35em] hover:scale-110 hover:drop-shadow-[0_0_25px_rgba(0,0,0,0.35)]
+            active:scale-95`}
         >
           Enter
         </Link>
+
         <div className="flex flex-col items-center gap-3 mt-24">
           <div className="flex gap-4">
             <span className="border border-black w-10 h-10 flex items-center justify-center">
