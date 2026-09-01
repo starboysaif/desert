@@ -10,7 +10,7 @@ body {
 
 @keyframes roll {
   from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  to { transform: rotate(-360deg); }
 }
 
 .tumbleweed-roll {
@@ -27,11 +27,6 @@ body {
   animation: fade-in-out 1s ease-in-out;
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-14px); }
-}
-
 .float-item {
-  animation: float 4.5s ease-in-out infinite;
+  filter: drop-shadow(0 10px 20px rgba(255,255,255,0.15));
 }
