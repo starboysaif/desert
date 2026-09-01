@@ -45,24 +45,15 @@ export default function Home() {
       >
         <source src="/desert.mp4" type="video/mp4" />
       </video>
-      <div className="fixed inset-0 bg-black/50 -z-10" />
 
       <div className="relative z-10 flex flex-col items-center gap-10">
         <Logo size={70} />
-        <nav className="flex flex-col items-center gap-5">
-          <span className="w-48 text-center border border-white text-white px-6 py-3 uppercase tracking-widest text-sm cursor-default">
-            Home
-          </span>
-          <Link
-            href="/catalog"
-            className="w-48 text-center border border-white text-white px-6 py-3 uppercase tracking-widest text-sm hover:bg-white hover:text-black transition"
-          >
-            Catalog
-          </Link>
-          <span className="w-48 text-center border border-white text-white px-6 py-3 uppercase tracking-widest text-sm cursor-default">
-            Contact
-          </span>
-        </nav>
+        <Link
+          href="/catalog"
+          className="text-white text-6xl md:text-8xl font-extrabold uppercase tracking-widest hover:opacity-70 transition"
+        >
+          Enter
+        </Link>
         <div className="flex gap-4 mt-4">
           <span className="border border-white w-10 h-10 flex items-center justify-center">
             <InstagramIcon />
