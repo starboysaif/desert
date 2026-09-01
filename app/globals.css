@@ -25,55 +25,94 @@ body {
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
-  overflow: hidden;
 }
 
 .scorpion-front {
-  transform: translateZ(6px);
+  transform: translateZ(20px);
 }
 
 .scorpion-back {
-  transform: rotateY(180deg) translateZ(6px);
+  transform: rotateY(180deg) translateZ(20px);
+}
+
+.scorpion-plate {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 22px;
+  background: radial-gradient(circle at 30% 22%, #2c2c2c, #0a0a0a 72%);
+  overflow: hidden;
 }
 
 .scorpion-edge {
   position: absolute;
+  background: linear-gradient(
+    to bottom,
+    #3a3a3a 0%,
+    #141414 50%,
+    #050505 100%
+  );
+}
+
+.scorpion-edge-left,
+.scorpion-edge-right {
   top: 0;
   bottom: 0;
-  width: 12px;
-  background: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0.9),
-    rgba(60, 60, 60, 0.6)
-  );
+  width: 40px;
 }
 
 .scorpion-edge-left {
   left: 0;
-  transform: rotateY(-90deg) translateZ(-6px);
+  transform: rotateY(-90deg) translateZ(-20px);
   transform-origin: left center;
 }
 
 .scorpion-edge-right {
   right: 0;
-  transform: rotateY(90deg) translateZ(-6px);
+  transform: rotateY(90deg) translateZ(-20px);
   transform-origin: right center;
+}
+
+.scorpion-edge-top,
+.scorpion-edge-bottom {
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(
+    to right,
+    #3a3a3a 0%,
+    #141414 50%,
+    #050505 100%
+  );
+}
+
+.scorpion-edge-top {
+  top: 0;
+  transform: rotateX(90deg) translateZ(-20px);
+  transform-origin: top center;
+}
+
+.scorpion-edge-bottom {
+  bottom: 0;
+  transform: rotateX(-90deg) translateZ(-20px);
+  transform-origin: bottom center;
 }
 
 .scorpion-shine {
   position: absolute;
   top: 0;
-  left: -60%;
-  width: 40%;
+  left: -70%;
+  width: 35%;
   height: 100%;
   background: linear-gradient(
     75deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.55) 50%,
+    rgba(255, 255, 255, 0.22) 50%,
     transparent 100%
   );
   transform: skewX(-20deg);
   animation: scorpion-shine-sweep 6s linear infinite;
+  pointer-events: none;
 }
 
 @keyframes scorpion-spin {
@@ -82,11 +121,10 @@ body {
 }
 
 @keyframes scorpion-shine-sweep {
-  0%, 40%  { left: -60%; }
-  55%      { left: 130%; }
-  100%     { left: 130%; }
+  0%, 40%  { left: -70%; }
+  55%      { left: 140%; }
+  100%     { left: 140%; }
 }
-
 .float-item {
   filter: drop-shadow(0 10px 20px rgba(255,255,255,0.15)
  );
