@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { InstagramIcon } from "@/components/Icons";
-import EnterButton from "@/components/EnterButton";
+import Enter3DButton from "@/components/Enter3DButton";
 
 function TikTokIcon() {
   return (
@@ -55,7 +55,7 @@ export default function Home() {
           title="3D Scorpion Logo"
         />
 
-        <EnterButton />
+        <Enter3DButton />
 
         <div className="flex flex-col items-center gap-3 mt-24">
           <div className="flex gap-4">
