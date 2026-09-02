@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Oswald } from "next/font/google";
+import { Bebas_Neue } from "next/font/google";
 import { InstagramIcon } from "@/components/Icons";
 
-const oswald = Oswald({
+const bebas = Bebas_Neue({
   subsets: ["latin"],
-  weight: ["700"],
+  weight: ["400"],
 });
 
 function TikTokIcon() {
@@ -20,6 +20,24 @@ function TikTokIcon() {
     >
       <path d="M16.6 5.82c-.9-.98-1.4-2.26-1.4-3.57h-3.06v14.28c0 1.6-1.3 2.9-2.9 2.9a2.9 2.9 0 0 1-2.9-2.9 2.9 2.9 0 0 1 2.9-2.9c.3 0 .58.05.85.13V10.6a6.2 6.2 0 0 0-.85-.06 5.96 5.96 0 0 0-5.96 5.96A5.96 5.96 0 0 0 9.24 22.46a5.96 5.96 0 0 0 5.96-5.96V9.07a8.2 8.2 0 0 0 4.78 1.53V7.55c-1.16 0-2.24-.37-3.38-1.73z" />
     </svg>
+  );
+}
+
+function EnterButton() {
+  const [pressed, setPressed] = useState(false);
+
+  return (
+    <Link
+      href="/catalog"
+      onMouseDown={() => setPressed(true)}
+      onMouseUp={() => setPressed(false)}
+      onMouseLeave={() => setPressed(false)}
+      onTouchStart={() => setPressed(true)}
+      onTouchEnd={() => setPressed(false)}
+      className={`${bebas.className} enter-btn ${pressed ? "pressed" : ""}`}
+    >
+      ENTER
+    </Link>
   );
 }
 
@@ -59,12 +77,9 @@ export default function Home() {
           }}
           title="3D Scorpion Logo"
         />
-        <Link
-          href="/catalog"
-          className={`${oswald.className} italic text-black text-8xl md:text-[11rem] uppercase tracking-widest hover:opacity-70 transition`}
-        >
-          Enter
-        </Link>
+
+        <EnterButton />
+
         <div className="flex flex-col items-center gap-3 mt-24">
           <div className="flex gap-4">
             <span className="border border-black w-10 h-10 flex items-center justify-center">
