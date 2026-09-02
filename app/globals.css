@@ -82,25 +82,27 @@ body {
   transform: skewX(-10deg);
   transition: transform 0.08s ease-out;
 
-  /* base color under the gradient shine */
-  color: #1a1a1a;
+  color: #3a3a3a;
 
-  /* extruded pop-out, built entirely from stacked text-shadows */
   text-shadow:
-    0 1px 0 #d9c8a0,
-    0 2px 0 #cabb92,
-    0 3px 0 #bbae84,
-    0 4px 0 #ac9f76,
-    0 5px 0 #9d9468,
-    0 6px 0 #8e875a,
-    0 7px 8px rgba(0, 0, 0, 0.4);
+    0 1px 0 #000,
+    0 2px 0 #000,
+    0 3px 0 #000,
+    0 4px 0 #000,
+    0 5px 0 #000,
+    0 6px 0 #000,
+    0 7px 0 #000,
+    0 8px 0 #000,
+    0 9px 0 #000,
+    0 10px 0 #000,
+    0 11px 0 #000,
+    0 12px 0 #000;
 }
 
 .enter-text.pressed {
-  transform: skewX(-10deg) translateY(6px);
+  transform: skewX(-10deg) translateY(11px);
   text-shadow:
-    0 1px 0 #cabb92,
-    0 2px 3px rgba(0, 0, 0, 0.3);
+    0 1px 0 #000;
 }
 
 /* the shine: a gradient clipped to the text, positioned by cursor via --mx/--my */
