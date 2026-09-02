@@ -70,67 +70,53 @@ body {
  );
 }
 
-.enter-btn {
+.enter-text {
   position: relative;
   display: inline-block;
-  font-size: 7rem;
+  font-size: 8rem;
   font-style: italic;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #1a1a1a;
-  background: linear-gradient(180deg, #e8d9bd 0%, #d4bd94 50%, #c2a878 100%);
-  padding: 0.15em 0.5em;
-  border-radius: 12px;
-  transform: skewX(-8deg) translateY(0);
   cursor: pointer;
-  overflow: hidden;
   user-select: none;
+  transform: skewX(-10deg);
+  transition: transform 0.08s ease-out;
 
-  /* extruded / popped-out effect */
-  box-shadow:
-    0 8px 0 0 #8a7550,
-    0 10px 14px rgba(0, 0, 0, 0.35),
-    inset 0 1px 1px rgba(255, 255, 255, 0.6),
-    inset 0 -3px 4px rgba(0, 0, 0, 0.15);
+  /* base color under the gradient shine */
+  color: #1a1a1a;
 
-  transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
+  /* extruded pop-out, built entirely from stacked text-shadows */
+  text-shadow:
+    0 1px 0 #d9c8a0,
+    0 2px 0 #cabb92,
+    0 3px 0 #bbae84,
+    0 4px 0 #ac a176,
+    0 5px 0 #9d9468,
+    0 6px 0 #8e875a,
+    0 7px 8px rgba(0, 0, 0, 0.4);
 }
 
-.enter-btn.pressed {
-  transform: skewX(-8deg) translateY(8px);
-  box-shadow:
-    0 0px 0 0 #8a7550,
-    0 2px 4px rgba(0, 0, 0, 0.3),
-    inset 0 2px 5px rgba(0, 0, 0, 0.35);
+.enter-text.pressed {
+  transform: skewX(-10deg) translateY(6px);
+  text-shadow:
+    0 1px 0 #cabb92,
+    0 2px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* shine sweep, same idea as the scorpion's gloss */
-.enter-btn::before {
-  content: "";
+/* the shine: a gradient clipped to the text, positioned by cursor via --mx/--my */
+.enter-text::before {
+  content: "ENTER";
   position: absolute;
-  top: 0;
-  left: -75%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.75) 50%,
-    transparent 100%
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.4) 15%,
+    transparent 40%
   );
-  transform: skewX(-20deg);
-  animation: shine 3.5s ease-in-out infinite;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
   pointer-events: none;
-}
-
-@keyframes shine {
-  0% {
-    left: -75%;
-  }
-  30% {
-    left: 125%;
-  }
-  100% {
-    left: 125%;
-  }
+  transition: background 0.05s linear;
 }
