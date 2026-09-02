@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3D Enter Key</title>
+<style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: transparent;
+    overflow: hidden;
+  }
+  #canvas-wrap {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div id="canvas-wrap"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/FontLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/TextGeometry.js"></script>
+<script>
+const wrap = document.getElementById('canvas-wrap');
+const isSmall = Math.min(window.innerWidth, window.innerHeight) < 500;
+
+// ---------- Scene setup (STATIC camera — no orbiting, this is a fixed key, not a floating object) ----------
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(30, wrap.clientWidth / wrap.clientHeight, 0.1, 100);
+camera.position.set(0, 0, 15);
+camera.lookAt(0, 0, 0);
+
+const renderer = new THREE.WebGLRenderer({ antialias: !isSmall, alpha: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, isSmall ? 1.5 : 2));
+wrap.appendChild(renderer.domElement);
+
+function fitToWrap() {
+  const w = wrap.clientWidth || window.innerWidth;
+  const h = wrap.clientHeight || window.innerHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+}
+fitToWrap();
+window.addEventListener('resize', fitToWrap);
+new ResizeObserver(fitToWrap).observe(wrap);
+
+// ---------- Lighting: fixed, no motion (avoids the "wandering shine" look) ----------
+scene.add(new THREE.AmbientLight(0x777777, 0.9));
+
+const keyLight = new THREE.DirectionalLight(0xffffff, 1.0);
+keyLight.position.set(3, 5, 9);
+scene.add(keyLight);
+
+const fillLight = new THREE.DirectionalLight(0xffcc99, 0.3);
+fillLight.position.set(-4, -2, 5);
+scene.add(fillLight);
+
+// ---------- Geometry helpers ----------
+function roundedRectShape(w, h, r) {
+  const shape = new THREE.Shape();
+  const x = -w / 2, y = -h / 2;
+  shape.moveTo(x, y + r);
+  shape.lineTo(x, y + h - r);
+  shape.quadraticCurveTo(x, y + h, x + r, y + h);
+  shape.lineTo(x + w - r, y + h);
+  shape.quadraticCurveTo(x + w, y + h, x + w, y + h - r);
+  shape.lineTo(x + w, y + r);
+  shape.quadraticCurveTo(x + w, y, x + w - r, y);
+  shape.lineTo(x + r, y);
+  shape.quadraticCurveTo(x, y, x, y + r);
+  return shape;
+}
+
+// ---------- Depth / position constants ----------
+// The "wall" (keyboard plate) sits at Z = 0.
+// The keycap's FRONT face rests proud of the wall by REST_HEIGHT.
+// The keycap's own thickness (CAP_DEPTH) is deeper than REST_HEIGHT, so its
+// back half is already hidden inside/behind the wall — like a real key stem.
+// Pressing it drives the front face down to PRESS_HEIGHT (nearly flush).
+const WALL_Z = 0;
+const CAP_DEPTH = 1.4;
+const REST_HEIGHT = 0.55;
+const PRESS_HEIGHT = 0.04;
+
+let capGroup = null;
+let targetFrontZ = REST_HEIGHT;
+let currentFrontZ = REST_HEIGHT;
+
+const loader = new THREE.FontLoader();
+loader.load('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/fonts/helvetiker_bold.typeface.json', (font) => {
+
+  const textGeo = new THREE.TextGeometry('ENTER', {
+    font: font,
+    size: 3,
+    height: CAP_DEPTH,
+    curveSegments: 6,
+    bevelEnabled: true,
+    bevelThickness: 0.1,
+    bevelSize: 0.06,
+    bevelSegments: 4,
+  });
+  textGeo.computeBoundingBox();
+  textGeo.center();
+
+  const bbox = textGeo.boundingBox;
+  const textW = bbox.max.x - bbox.min.x;
+  const textH = bbox.max.y - bbox.min.y;
+  const maxDim = Math.max(textW, textH);
+  camera.position.z = maxDim * 1.9;
+  camera.updateProjectionMatrix();
+
+  // The plate/wall behind the key
+  const padX = textW * 0.35;
+  const padY = textH * 0.9;
+  const wallShape = roundedRectShape(textW + padX, textH + padY, 0.6);
+  const wallGeo = new THREE.ExtrudeGeometry(wallShape, {
+    depth: 0.3,
+    bevelEnabled: true,
+    bevelThickness: 0.03,
+    bevelSize: 0.02,
+    bevelSegments: 3,
+    curveSegments: 4,
+  });
+  wallGeo.translate(0, 0, -0.3); // wall's FRONT face sits at z = 0
+
+  const wallMaterial = new THREE.MeshPhongMaterial({
+    color: 0x121212,
+    specular: 0x333333,
+    shininess: 40,
+  });
+  const wallMesh = new THREE.Mesh(wallGeo, wallMaterial);
+  wallMesh.position.z = WALL_Z;
+  scene.add(wallMesh);
+
+  // The keycap (the extruded text) — its own local origin is at its FRONT face,
+  // so setting capGroup.position.z = frontZ places the front face exactly there.
+  const capMaterial = new THREE.MeshPhongMaterial({
+    color: 0x0a0a0a,
+    specular: 0x999999,
+    shininess: 200,
+  });
+  const sideMaterial = new THREE.MeshPhongMaterial({
+    color: 0x060606,
+    specular: 0x444444,
+    shininess: 80,
+  });
+
+  const capMesh = new THREE.Mesh(textGeo, [capMaterial, sideMaterial]);
+  capMesh.position.z = -CAP_DEPTH; // shift so local z=0 is the front face
+
+  capGroup = new THREE.Group();
+  capGroup.add(capMesh);
+  capGroup.position.z = REST_HEIGHT;
+  scene.add(capGroup);
+});
+
+// ---------- Press interaction ----------
+function press() {
+  targetFrontZ = PRESS_HEIGHT;
+}
+function release(didClick) {
+  targetFrontZ = REST_HEIGHT;
+  if (didClick) {
+    window.top.location.href = '/catalog';
+  }
+}
+
+let pointerDownInside = false;
+
+wrap.addEventListener('pointerdown', () => {
+  pointerDownInside = true;
+  press();
+});
+window.addEventListener('pointerup', () => {
+  const wasInside = pointerDownInside;
+  pointerDownInside = false;
+  release(wasInside);
+});
+wrap.addEventListener('pointerleave', () => {
+  if (pointerDownInside) {
+    pointerDownInside = false;
+    targetFrontZ = REST_HEIGHT;
+  }
+});
+wrap.addEventListener('touchstart', () => {
+  pointerDownInside = true;
+  press();
+}, { passive: true });
+window.addEventListener('touchend', () => {
+  const wasInside = pointerDownInside;
+  pointerDownInside = false;
+  release(wasInside);
+});
+
+// ---------- Animate (press lerp ONLY — no idle rotation, nothing "floats") ----------
+function animate() {
+  requestAnimationFrame(animate);
+
+  if (capGroup) {
+    currentFrontZ += (targetFrontZ - currentFrontZ) * 0.3;
+    capGroup.position.z = currentFrontZ;
+  }
+
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>
