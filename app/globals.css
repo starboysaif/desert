@@ -117,6 +117,7 @@ body {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
+  -webkit-text-fill-color: transparent;  /* ← add this line */
   pointer-events: none;
   transition: background 0.05s linear;
 }
